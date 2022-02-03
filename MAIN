@@ -1,0 +1,25 @@
+function mailNotification(e) {
+  const source = e.source;
+  const sheet = source.getActiveSheet();
+  if (sheet.getName() !== "Baza klientów" ) return;
+
+  const range = e.range;
+  const rowNumber = range.getRow();
+  const targetRange = sheet.getRange(rowNumber,1,1,13);
+  const row = targetRange.getValues()[0];
+  const checkValue = row[3];
+  const info = row[1];
+  const province = row[7];
+  const client_name = row[9];
+  const client_phone = row[10];
+  const client_mail = row[11];
+  const receipient_email_address = row[12]
+  const subject = `Otwarty nabór KFS dla ${client_name} - powiat ${province}.`;
+  const msgBody = `Dla klienta ${client_name} , tel: ${client_phone} , mail: ${client_mail} , otwarty został nabór : ${info} . Nabór otwarty w powiecie : ${province} .` ;
+
+  if (checkValue === "NABÓR OTWARTY") {
+    GmailApp.sendEmail(receipient_email_address,subject,msgBody)
+    console.log("target range" , msgBody);
+  } 
+}
+
